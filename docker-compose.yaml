@@ -2,7 +2,7 @@ version: '3.1'
 
 services:
   db:
-    container_name: my4ciscat
+    container_name: my4ccdp
     image: mysql:5.7
     restart: always
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
@@ -13,3 +13,17 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - ciscat
+    
+  app:
+    container_name: ccdp
+    image: tomcat:9-jre11
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - ciscat
+
+networks:
+  ciscat:
