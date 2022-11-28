@@ -15,7 +15,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
       - ciscat
-    
+
   app:
     container_name: ccpd
     image: tomcat:9-jre11
