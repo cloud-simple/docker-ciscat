@@ -23,6 +23,8 @@ net use /delete s:
 
 ## Deployment
 
+### mysql
+
 * Clone the repo
   * `git clone https://github.com/cloud-simple/docker-ciscat.git`
 * Change to the cloned repo directory
@@ -38,3 +40,7 @@ MYSQL_ROOT_PASSWORD=root-password
   * `docker compose up -d`
 * See the applications log with the following command
   * `docker compose logs`
+
+### samba
+
+

@@ -1,7 +1,7 @@
-version: '3.1'
+version: '3.5'
 
 services:
-  db:
+  my4ccpd:
     container_name: my4ccpd
     image: mysql:5.7
     restart: always
@@ -16,14 +16,44 @@ services:
     networks:
       - ciscat
 
-  app:
+  ccpd:
     container_name: ccpd
     image: tomcat:9-jre11
     restart: always
     ports:
       - 8080:8080
+    volumes:
+      - "/srv/docker/ccpd:/data"
     networks:
       - ciscat
 
+  samba:
+    container_name: samba
+    build: ./samba/
+    #image: local/samba
+    restart: always
+    ports:
+      - 445:445
+    environment:
+      CISCAT_SMB_SHARE: ${CISCAT_SMB_SHARE}
+      CISCAT_SMB_SERVER: ${CISCAT_SMB_SERVER}
+      CCPD_URL: ${CCPD_URL}
+      CCPD_TOKEN: ${CCPD_TOKEN}
+      SAMBA_LOG_LEVEL: 3
+    volumes:
+      - "/srv/docker/samba:/data"
+    networks:
+      - ciscat
+
+### Default docker subnet IP range is `172.17.0.0/16`
+### To avoid conflicts with corporate LAN networking/routing add the following
+###   line to `/etc/docker/daemon.json` file: `{"bip": "192.168.168.1/24"}`, using
+###   the corresponding subnet from your IP spaces
+
 networks:
   ciscat:
+    name: cis
+    ipam:
+      config:
+        - subnet: 192.168.169.0/24
+          gateway: 192.168.169.1
