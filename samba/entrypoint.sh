@@ -24,27 +24,13 @@ echo "Setting timezone to ${TZ}"
 ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
 echo ${TZ} > /etc/timezone
 
-getent group  | grep "${GROUP_NAME}:x:${GROUP_ID}"           &>/dev/null || addgroup -g "${GROUP_ID}" -S "${GROUP_NAME}"
-getent passwd | grep "${USER_NAME}:x:${USER_ID}:${GROUP_ID}" &>/dev/null || adduser  -u "${USER_ID}"  -G "${GROUP_NAME}" "${USER_NAME}" -SHD
-echo -e "${PASSWORD}\n${PASSWORD}" | smbpasswd -a -s "${USER_NAME}"
-
+# possible option to add user/group is with groupadd/useradd
 #test -n "$(getent group  ciscat)" || groupadd -g 20001 ciscat
 #test -n "$(getent passwd ciscat)" || useradd  -u 20001 -g 20001 -N -M  -d /nonexistent -s /usr/sbin/nologin ciscat
 
-# We are waiting the following FS structure is present in `/data/downloads` with necessary
-#   distributions (`*.zip` files), where one directory contains only one corresponding file.
-#   The `/data/downloads` directory has to be prepared on host OS and mounted to the `samba`
-#   container as part of its `/data` volume (like: -v "/srv/docker/samba:/data")
-# * ./assessor/  # CIS-CAT Assessor,                                 like: ./assessor/CIS-CAT-Assessor-v4.23.0.zip
-# * ./license/   # License Key,                                      like: ./license/NewMember-LicenseKey-ClientConfigurationBundle.zip
-# * ./jre/       # Java Runtime Env for Windows x86-32 Architecture, like: ./jre/OpenJDK11U-jre_x86-32_windows_hotspot_11.0.17_8.zip
-# * ./jre64/     # Java Runtime Env for Windows x64 Architecture,    like: ./jre64/OpenJDK11U-jre_x64_windows_hotspot_11.0.17_8.zip
-
-# We are waiting the following FS structure is present in `/data/downloads` with necessary
-#   distributions (`*.zip` files), where one directory contains only one corresponding file.
-#   The `/data/downloads` directory has to be prepared on host OS and mounted to the `ccpd`
-#   container as part of its `/data` volume (like: -v "/srv/docker/ccpd:/data")
-# * ./dashboard/ # CIS-CAT Pro Dashboard,                            like: ./dashboard/'CIS-CAT Pro Dashboard v2.3.2-unix.zip'
+getent group  | grep "${GROUP_NAME}:x:${GROUP_ID}"           &>/dev/null || addgroup -g "${GROUP_ID}" -S "${GROUP_NAME}"
+getent passwd | grep "${USER_NAME}:x:${USER_ID}:${GROUP_ID}" &>/dev/null || adduser  -u "${USER_ID}"  -G "${GROUP_NAME}" "${USER_NAME}" -SHD
+echo -e "${PASSWORD}\n${PASSWORD}" | smbpasswd -a -s "${USER_NAME}"
 
 if [ ! -d /data/shares/${CISCAT_SMB_SHARE} ] ; then
   mkdir -p /data/shares/${CISCAT_SMB_SHARE}
@@ -77,6 +63,7 @@ if [ ! -e /data/shares/${CISCAT_SMB_SHARE}/cis-cat-centralized-ccpd.bat ] ; then
          -e "s#^SET AUTHENTICATION_TOKEN=.*#SET AUTHENTICATION_TOKEN=${CCPD_TOKEN}#" \
          -e "s#^SET DEBUG=.*#SET DEBUG=1#" \
          -e '1 i\DATE /T\nTIME /T\n' \
+         -e '/^@ECHO OFF/d' \
          /data/shares/${CISCAT_SMB_SHARE}/cis-cat-centralized-ccpd.bat
   echo -e "\nDATE /T\nTIME /T\nPAUSE\n" >> /data/shares/${CISCAT_SMB_SHARE}/cis-cat-centralized-ccpd.bat
 fi
@@ -91,6 +78,7 @@ if [ ! -e /data/shares/${CISCAT_SMB_SHARE}/cis-cat-centralized.bat ] ; then
   sed -i -e "s#^SET NetworkShare=.*#SET NetworkShare=\\\\\\\\${CISCAT_SMB_SERVER}\\\\${CISCAT_SMB_SHARE}#" \
          -e "s#^SET DEBUG=.*#SET DEBUG=1#" \
          -e '1 i\DATE /T\nTIME /T\n' \
+         -e '/^@ECHO OFF/d' \
          /data/shares/${CISCAT_SMB_SHARE}/cis-cat-centralized.bat
   echo -e "\nDATE /T\nTIME /T\nPAUSE\n" >> /data/shares/${CISCAT_SMB_SHARE}/cis-cat-centralized.bat
 fi

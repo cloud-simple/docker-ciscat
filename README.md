@@ -43,4 +43,19 @@ MYSQL_ROOT_PASSWORD=root-password
 
 ### samba
 
+We are waiting the following FS structure is present in `/data/downloads` with necessary distributions (`*.zip` files), where one directory contains only one corresponding file.
 
+* `./assessor/`  # CIS-CAT Assessor                                  like: `./assessor/CIS-CAT-Assessor-v4.23.0.zip`
+* `./license/`   # License Key                                       like: `./license/NewMember-LicenseKey-ClientConfigurationBundle.zip`
+* `./jre/`       # Java Runtime Env for Windows x86-32 Architecture  like: `./jre/OpenJDK11U-jre_x86-32_windows_hotspot_11.0.17_8.zip`
+* `./jre64/`     # Java Runtime Env for Windows x64 Architecture     like: `./jre64/OpenJDK11U-jre_x64_windows_hotspot_11.0.17_8.zip`
+
+The corresponding directory, like e.g.: `/srv/docker/samba/downloads`, has to be prepared on host OS and mounted to the `samba` container as part of its `/data` volume (like: -v "/srv/docker/samba:/data")
+
+### ccpd
+
+We are waiting the following FS structure is present in `/data/downloads` with necessary distributions (`*.zip` files), where one directory contains only one corresponding file.
+
+* `./dashboard/` # CIS-CAT Pro Dashboard                             like: `./dashboard/'CIS-CAT Pro Dashboard v2.3.2-unix.zip'`
+
+The corresponding directory, like e.g.: `/srv/docker/samba/downloads`, has to be prepared on host OS and mounted to the `ccpd` container as part of its `/data` volume (like: -v "/srv/docker/ccpd:/data")
