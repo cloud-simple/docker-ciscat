@@ -41,13 +41,13 @@ chmod 770                        /data/shares/${SAMBA_SHARE_NAME}
 
 if [ ! -d /data/shares/${SAMBA_SHARE_NAME}/Assessor ] ; then
   test -e /data/downloads/assessor/*.zip || { echo "== err: folder 'Assessor' is empty and no distributive is provided; exiting" ; exit -1 ; }
-  unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/ $(ls -A1 /data/downloads/assessor/*.zip | head -1)
+  unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/ "$(ls -A1 /data/downloads/assessor/*.zip | head -1)"
   echo "Extracted 'Assessor' folder"
 fi
 
 if [ -z "$(ls -A1 /data/shares/${SAMBA_SHARE_NAME}/Assessor/license)" ] ; then
   test -e /data/downloads/license/*.zip || { echo "== err: folder 'Assessor/license' is empty and no license is provided; exiting" ; exit -1 ; }
-  unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/Assessor/license/ $(ls -A1 /data/downloads/license/*.zip | head -1)
+  unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/Assessor/license/ "$(ls -A1 /data/downloads/license/*.zip | head -1)"
   echo "Extracted 'Assessor/license' files"
 fi
 
@@ -95,8 +95,8 @@ echo "Updated 'Assessor/config/sessions.properties' file"
 if [ ! -d /data/shares/${SAMBA_SHARE_NAME}/Java ] ; then
   test -e /data/downloads/jre/*.zip || { echo "== err: folder 'Java' is empty and no distributive is provided; exiting" ; exit -1 ; }
   mkdir -p /data/shares/${SAMBA_SHARE_NAME}/Java
-  unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/Java/ $(ls -A1 /data/downloads/jre/*.zip | head -1)
-  mv $(ls -A1d /data/shares/${SAMBA_SHARE_NAME}/Java/* | head -1) /data/shares/${SAMBA_SHARE_NAME}/Java/jre
+  unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/Java/ "$(ls -A1 /data/downloads/jre/*.zip | head -1)"
+  mv "$(ls -A1d /data/shares/${SAMBA_SHARE_NAME}/Java/* | head -1)" /data/shares/${SAMBA_SHARE_NAME}/Java/jre
   echo "Extracted 'Java' folder"
 fi
 
@@ -106,8 +106,8 @@ chmod -R 550                        /data/shares/${SAMBA_SHARE_NAME}/Java
 if [ ! -d /data/shares/${SAMBA_SHARE_NAME}/Java64 ] ; then
   test -e /data/downloads/jre64/*.zip || { echo "== err: folder 'Java64' is empty and no distributive is provided; exiting" ; exit -1 ; }
   mkdir -p /data/shares/${SAMBA_SHARE_NAME}/Java64
-  unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/Java64/ $(ls -A1 /data/downloads/jre64/*.zip | head -1)
-  mv $(ls -A1d /data/shares/${SAMBA_SHARE_NAME}/Java64/* | head -1) /data/shares/${SAMBA_SHARE_NAME}/Java64/jre
+  unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/Java64/ "$(ls -A1 /data/downloads/jre64/*.zip | head -1)"
+  mv "$(ls -A1d /data/shares/${SAMBA_SHARE_NAME}/Java64/* | head -1)" /data/shares/${SAMBA_SHARE_NAME}/Java64/jre
   echo "Extracted 'Java64' folder"
 fi
 
