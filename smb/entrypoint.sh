@@ -58,14 +58,14 @@ if [ ! -e /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat ] ; then
   echo "Prepare 'cis-cat-centralized-ccpd.bat' file"
   cp /data/shares/${SAMBA_SHARE_NAME}/Assessor/misc/Windows/cis-cat-centralized-ccpd.bat /data/shares/${SAMBA_SHARE_NAME}/
 
-  sed -i -e "s#^SET NetworkShare=.*#SET NetworkShare=\\\\\\\\${SAMBA_SERVER_NAME}\\\\${SAMBA_SHARE_NAME}#" \
+  sed -i -e '1 i\DATE /T\nTIME /T\n' \
+         -e '/^@ECHO OFF/d' \
+         -e "s#^SET DEBUG=.*#SET DEBUG=1#" \
+         -e "s#^SET NetworkShare=.*#SET NetworkShare=\\\\\\\\${SAMBA_SERVER_NAME}\\\\${SAMBA_SHARE_NAME}#" \
          -e "s#^SET CCPDUrl=.*#SET CCPDUrl=${CCPD_URL}#" \
          -e "s#^SET AUTHENTICATION_TOKEN=.*#SET AUTHENTICATION_TOKEN=${CCPD_TOKEN}#" \
-         -e "s#^SET DEBUG=.*#SET DEBUG=1#" \
-         -e '1 i\DATE /T\nTIME /T\n' \
-         -e '/^@ECHO OFF/d' \
-         /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat
-  echo -e "\nDATE /T\nTIME /T\nPAUSE\n" >> /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat
+         -e '$ a\DATE /T\nTIME /T\nnet use /delete s:\nPAUSE\n' \
+            /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat
 fi
 
 chown ${USER_NAME}:${GROUP_NAME} /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat
@@ -75,12 +75,12 @@ if [ ! -e /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized.bat ] ; then
   echo "Prepare 'cis-cat-centralized.bat' file"
   cp /data/shares/${SAMBA_SHARE_NAME}/Assessor/misc/Windows/cis-cat-centralized.bat /data/shares/${SAMBA_SHARE_NAME}/
 
-  sed -i -e "s#^SET NetworkShare=.*#SET NetworkShare=\\\\\\\\${SAMBA_SERVER_NAME}\\\\${SAMBA_SHARE_NAME}#" \
-         -e "s#^SET DEBUG=.*#SET DEBUG=1#" \
-         -e '1 i\DATE /T\nTIME /T\n' \
+  sed -i -e '1 i\DATE /T\nTIME /T\n' \
          -e '/^@ECHO OFF/d' \
-         /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized.bat
-  echo -e "\nDATE /T\nTIME /T\nPAUSE\n" >> /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized.bat
+         -e "s#^SET DEBUG=.*#SET DEBUG=1#" \
+         -e "s#^SET NetworkShare=.*#SET NetworkShare=\\\\\\\\${SAMBA_SERVER_NAME}\\\\${SAMBA_SHARE_NAME}#" \
+         -e '$ a\DATE /T\nTIME /T\nnet use /delete s:\nPAUSE\n' \
+            /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized.bat
 fi
 
 chown ${USER_NAME}:${GROUP_NAME} /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized.bat
@@ -154,5 +154,8 @@ _EOF
 
 # directory for samba log files
 mkdir -p /usr/local/samba/var/
+
+echo "All setting are ready"
+echo "Exec with the following command: [$@]"
 
 exec "$@"
