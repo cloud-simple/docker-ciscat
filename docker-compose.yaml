@@ -24,6 +24,12 @@ services:
     restart: always
     ports:
       - 80:8080
+    environment:
+      CCPD_URL: ${CCPD_URL}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_SERVER: my4ccpd
     volumes:
       - "/srv/docker/ccpd:/data"
     networks:

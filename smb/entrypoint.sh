@@ -61,7 +61,7 @@ if [ ! -e /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat ] ; then
          -e '/^@ECHO OFF/d' \
          -e "s#^SET DEBUG=.*#SET DEBUG=1#" \
          -e "s#^SET NetworkShare=.*#SET NetworkShare=\\\\\\\\${SAMBA_SERVER_NAME}\\\\${SAMBA_SHARE_NAME}#" \
-         -e "s#^SET CCPDUrl=.*#SET CCPDUrl=${CCPD_URL}#" \
+         -e "s#^SET CCPDUrl=.*#SET CCPDUrl=${CCPD_URL}/api/reports/upload#" \
          -e "s#^SET AUTHENTICATION_TOKEN=.*#SET AUTHENTICATION_TOKEN=${CCPD_TOKEN}#" \
          -e '$ a\DATE /T\nTIME /T\nnet use /delete s:\nPAUSE\n' \
             /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat
