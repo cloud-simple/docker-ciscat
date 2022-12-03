@@ -1,0 +1,32 @@
+version: '3.5'
+
+services:
+  smb:
+    container_name: smb
+    build: ./
+    restart: always
+    ports:
+      - 445:445
+    environment:
+      SAMBA_SHARE_NAME: ${SAMBA_SHARE_NAME}
+      SAMBA_SERVER_NAME: ${SAMBA_SERVER_NAME}
+      CCPD_URL: ${CCPD_URL}
+      CCPD_TOKEN: ${CCPD_TOKEN}
+      SAMBA_LOG_LEVEL: 3
+    volumes:
+      - "/srv/docker/smb:/data"
+    networks:
+      - cis-smb
+
+### Default docker subnet IP range is `172.17.0.0/16`
+### To avoid conflicts with corporate LAN networking/routing add the following
+###   line to `/etc/docker/daemon.json` file: `{"bip": "192.168.168.1/24"}`, using
+###   the corresponding subnet from your IP spaces
+
+networks:
+  cis-smb:
+    name: cis-smb
+    ipam:
+      config:
+        - subnet: 192.168.169.0/24
+          gateway: 192.168.169.1

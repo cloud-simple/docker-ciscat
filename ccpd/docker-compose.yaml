@@ -16,41 +16,25 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
-      - ciscat
+      - cis-ccpd
 
   ccpd:
     container_name: ccpd
-    build: ./ccpd/
+    build: ./
     restart: always
     ports:
       - 80:8080
     environment:
-      CCPD_URL: ${CCPD_URL}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_SERVER: my4ccpd
+      CCPD_URL: ${CCPD_URL}
+      CCPD_TOKEN: ${CCPD_TOKEN}
     volumes:
       - "/srv/docker/ccpd:/data"
     networks:
-      - ciscat
-
-  smb:
-    container_name: smb
-    build: ./smb/
-    restart: always
-    ports:
-      - 445:445
-    environment:
-      SAMBA_SHARE_NAME: ${SAMBA_SHARE_NAME}
-      SAMBA_SERVER_NAME: ${SAMBA_SERVER_NAME}
-      CCPD_URL: ${CCPD_URL}
-      CCPD_TOKEN: ${CCPD_TOKEN}
-      SAMBA_LOG_LEVEL: 3
-    volumes:
-      - "/srv/docker/smb:/data"
-    networks:
-      - ciscat
+      - cis-ccpd
 
 ### Default docker subnet IP range is `172.17.0.0/16`
 ### To avoid conflicts with corporate LAN networking/routing add the following
@@ -58,9 +42,9 @@ services:
 ###   the corresponding subnet from your IP spaces
 
 networks:
-  ciscat:
-    name: ciscat
+  cis-ccpd:
+    name: cis-ccpd
     ipam:
       config:
-        - subnet: 192.168.169.0/24
-          gateway: 192.168.169.1
+        - subnet: 192.168.170.0/24
+          gateway: 192.168.170.1

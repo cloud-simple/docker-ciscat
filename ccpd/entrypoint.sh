@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -e
 
-
-MYSQL_PORT=${MYSQL_PORT:-3306}
 MYSQL_USER=${MYSQL_USER:-ciscat}
 MYSQL_DATABASE=${MYSQL_DATABASE:-ccpd}
 MYSQL_SERVER=${MYSQL_SERVER:-mysql}
+MYSQL_PORT=${MYSQL_PORT:-3306}
+CCPD_TOKEN=${CCPD_TOKEN:-11112222333344445555666677778888} # not used now; TODO: try to init token in DB via this script
 
-test -n "${CCPD_URL}" || { echo "== err: CCPD_URL: env is empty; exiting" ; exit -1 ; }
 test -n "${MYSQL_PASSWORD}" || { echo "== err: MYSQL_PASSWORD env is empty; exiting" ; exit -1 ; }
+test -n "${CCPD_URL}" || { echo "== err: CCPD_URL: env is empty; exiting" ; exit -1 ; }
 
 # TZ is inherited from Dockerfile, can be changed in run time
 ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime

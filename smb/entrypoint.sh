@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-TZ=${TZ:-UTC}
-
 USER_ID=${USER_ID:-20001}
 GROUP_ID=${GROUP_ID:-20001}
 USER_NAME=${USER_NAME:-ciscat}
@@ -20,6 +18,7 @@ test -n "${SAMBA_SERVER_NAME}" || { echo "== err: SAMBA_SERVER_NAME env is empty
 test -n "${CCPD_URL}" || { echo "== err: CCPD_URL env is empty; exiting" ; exit -1 ; }
 test -n "${CCPD_TOKEN}" || { echo "== err: CCPD_TOKEN env is empty; exiting" ; exit -1 ; }
 
+# TZ is inherited from Dockerfile, can be changed in run time
 ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime
 echo ${TZ} > /etc/timezone
 echo "Set timezone to ${TZ}"
