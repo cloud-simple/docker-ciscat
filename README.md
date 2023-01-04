@@ -43,10 +43,10 @@ CCPD_TOKEN=11112222333344445555666677778888
   * `CCPD_URL` - the URL for the CIS-CAT Pro Dashboard API to which CIS-CAT reports are POST'ed
   * `CCPD_TOKEN` - the **Authentication Token** generated for an `API` user in CIS-CAT Pro Dashboard
 * Create the directory `/srv/docker/samba/downloads` with the following directory structure within it
-  * `./assessor/` # to place `zip` file with CIS-CAT Assessor, like: `./assessor/CIS-CAT-Assessor-v4.23.0.zip`
-  * `./license/`  # to place `zip` file with License Key, like: `./license/NewMember-LicenseKey-ClientConfigurationBundle.zip`
-  * `./jre/`      # to place `zip` file with Java Runtime Env bundle for Windows x86-32 Architecture, like: `./jre/OpenJDK11U-jre_x86-32_windows_hotspot_11.0.17_8.zip`
-  * `./jre64/`    # to place `zip` file with Java Runtime Env bundle for Windows x64 Architecture, like: `./jre64/OpenJDK11U-jre_x64_windows_hotspot_11.0.17_8.zip`
+  * `./assessor/` and place here the distribution `zip` file with CIS-CAT Assessor, like: `./assessor/CIS-CAT-Assessor-v4.23.0.zip`
+  * `./license/` and place here the distribution `zip` file with License Key, like: `./license/NewMember-LicenseKey-ClientConfigurationBundle.zip`
+  * `./jre/` and place here the distribution `zip` file with Java Runtime Env bundle for Windows x86-32 Architecture, like: `./jre/OpenJDK11U-jre_x86-32_windows_hotspot_11.0.17_8.zip`
+  * `./jre64/` and place here the distribution `zip` file with Java Runtime Env bundle for Windows x64 Architecture, like: `./jre64/OpenJDK11U-jre_x64_windows_hotspot_11.0.17_8.zip`
 * The following is an exemplary content of possible directory structure (more details on how the container processes the directory structure are available in the section **Deployment details - smb** below)
 
 ```
