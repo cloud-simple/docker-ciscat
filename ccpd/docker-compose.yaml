@@ -31,6 +31,11 @@ services:
       MYSQL_SERVER: my4ccpd
       CCPD_URL: ${CCPD_URL}
       CCPD_TOKEN: ${CCPD_TOKEN}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      DEFAULT_SENDER_EMAIL_ADDRESS: ${DEFAULT_SENDER_EMAIL_ADDRESS}
     volumes:
       - "/srv/docker/ccpd:/data"
     networks:

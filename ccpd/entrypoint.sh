@@ -7,6 +7,12 @@ MYSQL_SERVER=${MYSQL_SERVER:-mysql}
 MYSQL_PORT=${MYSQL_PORT:-3306}
 CCPD_TOKEN=${CCPD_TOKEN:-11112222333344445555666677778888} # not used now; TODO: try to init token in DB via this script
 
+SMTP_HOST=${SMTP_HOST:-localhost}
+SMTP_PORT=${SMTP_PORT:-25}
+SMTP_USER=${SMTP_USER:-}
+SMTP_PASS=${SMTP_PASS:-}
+DEFAULT_SENDER_EMAIL_ADDRESS=${DEFAULT_SENDER_EMAIL_ADDRESS:-}
+
 test -n "${MYSQL_PASSWORD}" || { echo "== err: MYSQL_PASSWORD env is empty; exiting" ; exit -1 ; }
 test -n "${CCPD_URL}" || { echo "== err: CCPD_URL: env is empty; exiting" ; exit -1 ; }
 
@@ -67,10 +73,10 @@ legacy:
 grails:
     serverURL: "${CCPD_URL}"
     mail:
-        host: ""
-        port: ""
-        username: ""
-        password: ""
+        host: "${SMTP_HOST}"
+        port: "${SMTP_PORT}"
+        username: "${SMTP_USER}"
+        password: "${SMTP_PASS}"
         props:
             mail.smtp.auth: ""
             mail.smtp.socketFactory.port: ""
@@ -82,7 +88,7 @@ grails:
         springsecurity:
             ui:
                 forgotPassword:
-                    emailFrom: ""
+                    emailFrom: "${DEFAULT_SENDER_EMAIL_ADDRESS}"
     assessorService:
         active: false
         url: ""
