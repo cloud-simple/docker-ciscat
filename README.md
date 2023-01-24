@@ -51,6 +51,7 @@ $ tree /srv/docker/smb/downloads
   * `docker compose up -d`
 * See the applications log with the following command
   * `docker compose logs`
+* Now end users should be able to run assessment from the Shared Folder using the appropriate batch file, like `\\samba.example.org\CIS\cis-cat-centralized-ccpd.bat`
 
 ### CCPD App and DB
 
