@@ -1,7 +1,6 @@
 # CIS-CAT Pro Assessor and Dashboard in Docker
 
-> NOTE:
->
+> **Note**
 > Here we will use `Assessor App` for **CIS-CAT Pro Assessor** Application and `CCPD App` for **CIS-CAT Pro Dashboard**  Application
 
 ## Installation
@@ -28,7 +27,7 @@ CCPD_TOKEN=11112222333344445555666677778888
   * `CCPD_TOKEN` - the **Authentication Token** generated for an `API` user in CCPD App
 * Create the directory `/srv/docker/smb/downloads` with the following directory structure within it and add there the corresponding content
   * `./assessor/` place here the distribution `zip` file with Assessor App, like: `./assessor/CIS-CAT-Assessor-v4.23.0.zip`
-  * `./license/` place here the distribution `zip` file with License Key, like: `./license/NewMember-LicenseKey-ClientConfigurationBundle.zip`
+  * `./license/` place here `zip` file with License Key, like: `./license/NewMember-LicenseKey-ClientConfigurationBundle.zip`
   * `./jre/` place here the distribution `zip` file with Java Runtime Env bundle for Windows x86-32 Architecture, like: `./jre/OpenJDK11U-jre_x86-32_windows_hotspot_11.0.17_8.zip`
   * `./jre64/` place here the distribution `zip` file with Java Runtime Env bundle for Windows x64 Architecture, like: `./jre64/OpenJDK11U-jre_x64_windows_hotspot_11.0.17_8.zip`
 * The following is an exemplary content of possible directory structure - more details on how the container processes the directory structure are available in the section **Deployment details - smb** below
@@ -79,16 +78,16 @@ DEFAULT_SENDER_EMAIL_ADDRESS=noreply@smtp.example.org
   * `MYSQL_DATABASE` - CCPD DB container MySQL DB name, also used by CCPD App container to connect to the mentioned DB
   * `MYSQL_ROOT_PASSWORD` - CCPD DB container MySQL server root user password
   * `CCPD_URL` - Server URL the CCPD App to be configured to listen to
-  * `CCPD_TOKEN` - this is not used for CCPD App container deployment now
+  * `CCPD_TOKEN` - :exclamation: this is not used for CCPD App container deployment now :exclamation:
      * Assessor App uses this CCPD TOKEN to authenticate to CCPD App when it posts assessment reports to CCPD App
-     * for now this token is created via CCPD App Web Interface and passed to `smb` container during deployment as variable
-     * TODO: try to initialize CCPD TOKEN in CCPD DB via `entrypoint.sh` script
+     * Currently this token is created via CCPD App Web Interface and passed to `smb` container for Assessor App during deployment as a variable
+       - [ ] TODO: try to initialize CCPD TOKEN in CCPD DB via `entrypoint.sh` script
   * `SMTP_HOST` - SMTP HOST parameter of CCPD App 
   * `SMTP_PORT` - SMTP PORT parameter of CCPD App
   * `SMTP_USER` - SMTP USER parameter of CCPD App
   * `SMTP_PASS` - SMTP PASS parameter of CCPD App
-  * `DEFAULT_SENDER_EMAIL_ADDRESS` - default address for forgot password email messages
-* Create the directory `/srv/docker/ccpd/downloads` with the following directory structure within it and add there the corresponding content
+  * `DEFAULT_SENDER_EMAIL_ADDRESS` - default address for `forgot password` email messages
+* Create the directory `/srv/docker/ccpd/downloads` with the following directory structure within it and add there corresponding content
   * `./dashboard/` place here the distribution `zip` file with CCPD App, like: `./dashboard/CIS-CAT-Pro-Dashboard-v2.3.2-unix.zip`
 * The following is an exemplary content of possible directory structure - more details on how the container processes the directory structure are available in the section **Deployment details - ccpd** below
 
@@ -99,7 +98,7 @@ $ tree /srv/docker/ccpd/downloads
     └── CIS-CAT-Pro-Dashboard-v2.3.2-unix.zip
 ```
 
-* Create the directory `/srv/docker/my4ccpd` which will be used as a directory to store MySQL database for `my4ccpd` which is MySQL DB container for CCPD App - more details on `my4ccpd` container are available in the section **Deployment details - my4ccpd** below
+* Create the directory `/srv/docker/my4ccpd` which will be used as a persistent storage for CCPD App data managed by MySQL DB container - this will be bound to MySQL container's `MySQL Data Directory` directory - more details on `my4ccpd` container are available in the section **Deployment details - my4ccpd** below
 * Run the following command
   * `docker compose up -d`
 * See the applications log with the following command
@@ -112,7 +111,7 @@ $ tree /srv/docker/ccpd/downloads
 
 * The container runs `samba (smbd)` service which serves Assessor App content in **Centralized Workflow** mode
 * According to `docker-compose.yaml` file the container is starting with the host path `/srv/docker/smb` mounted as the container volume with path `/data`
-* To serve Assessor App the container ENTRYPOINT script (`entrypoint.sh`) creates (and fills with approprate content) the directory structure for SMB share folder available within container file system at `/data/shares/${SAMBA_SHARE_NAME}` path
+* To serve Assessor App the container ENTRYPOINT script (`entrypoint.sh`) creates (and fills with approprate content) the directory structure for SMB share folder (available within container file system at `/data/shares/${SAMBA_SHARE_NAME}` path) and make all necessary changes for `smbd` configuration
 * All the required content of Assessor App shared folder direcory structure (below the `/data/shares/${SAMBA_SHARE_NAME}` directory) is based on the structure and content of **downloads** directory (available within container file system at `/data/downloads` path, and provided via the mentioned above container volume) and formed in the following way
   * If a component of Assessor App shared folder direcory structure exists (available via the mentioned above container volume on `/data/shares/${SAMBA_SHARE_NAME}` path) the component content is not recreated and is left as is
   * If a component of Assessor App shared folder direcory structure doesn't exist, the component content is created from the corresponding `.zip` file provided via the mentioned above container volume on `/data/downloads` path
