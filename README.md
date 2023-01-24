@@ -26,6 +26,7 @@ CCPD_TOKEN=11112222333344445555666677778888
   * `SAMBA_SHARE_NAME` - the name of the SMB share on the above SMB server for Assessor App content
   * `CCPD_URL` - the URL for the CCPD App API to which Assessor App reports are POST'ed
   * `CCPD_TOKEN` - the **Authentication Token** generated for an `API` user in CCPD App
+    * Currently this token have to be created via CCPD App Web Interface and used here
 * Create the directory `/srv/docker/smb/downloads` with the following directory structure within it and add there the corresponding content
   * `./assessor/` place here the distribution `zip` file with Assessor App, like: `./assessor/CIS-CAT-Assessor-v4.23.0.zip`
   * `./license/` place here `zip` file with License Key, like: `./license/NewMember-LicenseKey-ClientConfigurationBundle.zip`
