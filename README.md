@@ -89,7 +89,7 @@ DEFAULT_SENDER_EMAIL_ADDRESS=noreply@smtp.example.org
   * `SMTP_PORT` - SMTP PORT parameter of CCPD App
   * `SMTP_USER` - SMTP USER parameter of CCPD App
   * `SMTP_PASS` - SMTP PASS parameter of CCPD App
-  * `DEFAULT_SENDER_EMAIL_ADDRESS` - default address for `forgot password` email messages
+  * `DEFAULT_SENDER_EMAIL_ADDRESS` - default address for '**forgot password**' email messages
 * Create the directory `/srv/docker/ccpd/downloads` with the following directory structure within it and add there corresponding content
   * `./dashboard/` place here the distribution `zip` file with CCPD App, like: `./dashboard/CIS-CAT-Pro-Dashboard-v2.3.2-unix.zip`
 * The following is an exemplary content of possible directory structure - more details on how the container processes the directory structure are available in the section '**Deployment details - ccpd**' below
@@ -114,13 +114,13 @@ $ tree /srv/docker/ccpd/downloads
 
 * The container runs `samba (smbd)` service which serves Assessor App content in '**Centralized Workflow**' mode
 * According to `docker-compose.yaml` file the container is starting with the host path `/srv/docker/smb` mounted as the container volume with path `/data`
-* To serve Assessor App the container ENTRYPOINT script (`entrypoint.sh`) creates (and fills with approprate content) the directory structure for SMB share folder (available within container file system at `/data/shares/${SAMBA_SHARE_NAME}` path) and make all necessary changes for `smbd` configuration
+* To serve Assessor App the container ENTRYPOINT script (`entrypoint.sh`) creates (and fills with approprate content) the directory structure for SMB foder used as Assessor App Shared Folder (available within container file system at `/data/shares/${SAMBA_SHARE_NAME}` path) and make all necessary changes for `smbd` configuration
 * All the required content of Assessor App Shared Folder direcory structure (below the `/data/shares/${SAMBA_SHARE_NAME}` directory) is based on the structure and content of '**downloads**' directory (available within container file system at `/data/downloads` path, and provided via the mentioned above container volume) and formed in the following way
   * If a component of Assessor App Shared Folder direcory structure exists (available via the mentioned above container volume on `/data/shares/${SAMBA_SHARE_NAME}` path) the component content is not recreated and is left as is
   * If a component of Assessor App Shared Folder direcory structure doesn't exist, the component content is created from the corresponding `.zip` file provided via the mentioned above container volume on `/data/downloads` path
   * The ENTRYPOINT script expects the following direcory structure present within container file system at `/data/downloads` path with the corresponding distribution `.zip` files, where one directory contains only one `.zip` file
     * `./assessor/*.zip` -  distribution for Assessor App
-    * `./license/*.zip` -  distribution for License Key 
+    * `./license/*.zip` -  file with License Key 
     * `./jre/*.zip` -  distribution for Java Runtime Env for Windows x86-32 Architecture
     * `./jre64/*.zip` -  distribution for Java Runtime Env for Windows x64 Architecture
 * The corresponding directory `/srv/docker/smb/downloads` has to be prepared on host OS and mounted to the `smb` container as part of its `/data` volume
@@ -146,14 +146,14 @@ $ tree /srv/docker/ccpd/downloads
 * According to `docker-compose.yaml` file the container is started with the host path `/srv/docker/my4ccpd` mounted as the container volume with path `/var/lib/mysql`
   * This volume is used as `MySQL Data Directory` where information managed by the MySQL server is stored
   * If `mysql` container instance starts with empty `Data Directory` all the necessary data in the `Data Directory` will be created and initialized 
-  * If `mysql` container instance starts with a data directory that already contains a database, the pre-existing database will not be changed in any way
+  * If `mysql` container instance starts with a `Data Directory` that already contains a database, the pre-existing database will not be changed in any way
   * Binding a directory on the host into a container in the described way provides the persistent storage for the application data managed by MySQL
 * The corresponding directory `/srv/docker/my4ccpd` has to be prepared on host OS and mounted to the `my4ccpd` container as `/var/lib/mysql` volume
   * It can be done the way provided in `docker-compose.yaml` file or using corresponding `docker` command  with `-v` flag, like: `-v "/srv/docker/my4ccpd:/var/lib/mysql"`
 
 ## End User Usage
 
-To run Assessor App tool on Windows OS, an user should create batch file and run it as Administrator. In the following steps a file with name `ciscat.bat` is created as an example on Windows Desktop of Windows 10 Pro OS
+To run Assessor App tool on Windows OS, an end user can create a batch file with specified below commands and run it as Administrator. In the following steps a file with name `ciscat.bat` is created as an example on Windows Desktop of Windows 10 Pro OS
 
 * Right Click on Windows Desktop -> Click `New` -> Click `Text Document`
 * Provide `ciscat.bat` as the name for the file -> Press `Enter` -> Click `Yes` in the `Rename` confirmation window
@@ -162,7 +162,7 @@ To run Assessor App tool on Windows OS, an user should create batch file and run
 
 ```
 net use /delete s:
-net use s: \\ciscat.example.org\CIS /user:ciscat ciscat
-\\ciscat.example.org\CIS\cis-cat-centralized-ccpd.bat
+net use s: \\samba.example.org\CIS /user:ciscat ciscat
+\\samba.example.org\CIS\cis-cat-centralized-ccpd.bat
 net use /delete s:
 ```
