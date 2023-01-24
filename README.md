@@ -6,7 +6,7 @@
 
 ## Installation
 
-### Samba server and shared folder to serve Assessor App content
+### Samba server and Shared Folder to serve Assessor App content
 
 * Clone the repo
   * `git clone https://github.com/cloud-simple/docker-ciscat.git`
@@ -55,7 +55,7 @@ $ tree /srv/docker/smb/downloads
 
 ### CCPD App and DB
 
-* Clone the repo - this is the same repo which is used for **Samba server and shared folder to serve Assessor App content** above
+* Clone the repo - this is the same repo which is used for **Samba server and Shared Folder to serve Assessor App content** above
   * `git clone https://github.com/cloud-simple/docker-ciscat.git`
 * Change to the `ccpd` directory within the cloned repo directory
   * `cd docker-ciscat/ccpd`
@@ -115,9 +115,9 @@ $ tree /srv/docker/ccpd/downloads
 * The container runs `samba (smbd)` service which serves Assessor App content in **Centralized Workflow** mode
 * According to `docker-compose.yaml` file the container is starting with the host path `/srv/docker/smb` mounted as the container volume with path `/data`
 * To serve Assessor App the container ENTRYPOINT script (`entrypoint.sh`) creates (and fills with approprate content) the directory structure for SMB share folder (available within container file system at `/data/shares/${SAMBA_SHARE_NAME}` path) and make all necessary changes for `smbd` configuration
-* All the required content of Assessor App shared folder direcory structure (below the `/data/shares/${SAMBA_SHARE_NAME}` directory) is based on the structure and content of **downloads** directory (available within container file system at `/data/downloads` path, and provided via the mentioned above container volume) and formed in the following way
-  * If a component of Assessor App shared folder direcory structure exists (available via the mentioned above container volume on `/data/shares/${SAMBA_SHARE_NAME}` path) the component content is not recreated and is left as is
-  * If a component of Assessor App shared folder direcory structure doesn't exist, the component content is created from the corresponding `.zip` file provided via the mentioned above container volume on `/data/downloads` path
+* All the required content of Assessor App Shared Folder direcory structure (below the `/data/shares/${SAMBA_SHARE_NAME}` directory) is based on the structure and content of **downloads** directory (available within container file system at `/data/downloads` path, and provided via the mentioned above container volume) and formed in the following way
+  * If a component of Assessor App Shared Folder direcory structure exists (available via the mentioned above container volume on `/data/shares/${SAMBA_SHARE_NAME}` path) the component content is not recreated and is left as is
+  * If a component of Assessor App Shared Folder direcory structure doesn't exist, the component content is created from the corresponding `.zip` file provided via the mentioned above container volume on `/data/downloads` path
   * The ENTRYPOINT script expects the following direcory structure present within container file system at `/data/downloads` path with the corresponding distribution `.zip` files, where one directory contains only one `.zip` file
     * `./assessor/*.zip` -  distribution for Assessor App
     * `./license/*.zip` -  distribution for License Key 
