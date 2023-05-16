@@ -41,13 +41,13 @@ chmod 770                        /data/shares/${SAMBA_SHARE_NAME}
 if [ ! -d /data/shares/${SAMBA_SHARE_NAME}/Assessor ] ; then
   test -e /data/downloads/assessor/*.zip || { echo "== err: folder 'Assessor' is empty and no distributive is provided; exiting" ; exit -1 ; }
   unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/ "$(ls -A1 /data/downloads/assessor/*.zip | head -1)"
-  echo "Extracted 'Assessor' folder"
+  echo "Extracted 'Assessor' folder to '/data/shares/${SAMBA_SHARE_NAME}/'"
 fi
 
 if [ -z "$(ls -A1 /data/shares/${SAMBA_SHARE_NAME}/Assessor/license)" ] ; then
   test -e /data/downloads/license/*.zip || { echo "== err: folder 'Assessor/license' is empty and no license is provided; exiting" ; exit -1 ; }
   unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/Assessor/license/ "$(ls -A1 /data/downloads/license/*.zip | head -1)"
-  echo "Extracted 'Assessor/license' files"
+  echo "Extracted 'Assessor/license' files to '/data/shares/${SAMBA_SHARE_NAME}/Assessor/license/'"
 fi
 
 chown -R ${USER_NAME}:${GROUP_NAME} /data/shares/${SAMBA_SHARE_NAME}/Assessor
@@ -64,7 +64,7 @@ if [ ! -e /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat ] ; then
          -e "s#^SET AUTHENTICATION_TOKEN=.*#SET AUTHENTICATION_TOKEN=${CCPD_TOKEN}#" \
          -e '$ a\DATE /T\nTIME /T\nnet use /delete s:\nPAUSE\n' \
             /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat
-  echo "Created 'cis-cat-centralized-ccpd.bat' file"
+  echo "Created '/data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat' file"
 fi
 
 chown ${USER_NAME}:${GROUP_NAME} /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized-ccpd.bat
@@ -79,7 +79,7 @@ if [ ! -e /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized.bat ] ; then
          -e "s#^SET NetworkShare=.*#SET NetworkShare=\\\\\\\\${SAMBA_SERVER_NAME}\\\\${SAMBA_SHARE_NAME}#" \
          -e '$ a\DATE /T\nTIME /T\nnet use /delete s:\nPAUSE\n' \
             /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized.bat
-  echo "Created 'cis-cat-centralized.bat' file"
+  echo "Created '/data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized.bat' file"
 fi
 
 chown ${USER_NAME}:${GROUP_NAME} /data/shares/${SAMBA_SHARE_NAME}/cis-cat-centralized.bat
@@ -89,14 +89,14 @@ cat > /data/shares/${SAMBA_SHARE_NAME}/Assessor/config/sessions.properties << _E
 session.default.type=local
 session.default.tmp=C:\\\\Windows\\\\Temp
 _EOF
-echo "Updated 'Assessor/config/sessions.properties' file"
+echo "Updated '/data/shares/${SAMBA_SHARE_NAME}/Assessor/config/sessions.properties' file"
 
 if [ ! -d /data/shares/${SAMBA_SHARE_NAME}/Java ] ; then
   test -e /data/downloads/jre/*.zip || { echo "== err: folder 'Java' is empty and no distributive is provided; exiting" ; exit -1 ; }
   mkdir -p /data/shares/${SAMBA_SHARE_NAME}/Java
   unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/Java/ "$(ls -A1 /data/downloads/jre/*.zip | head -1)"
   mv "$(ls -A1d /data/shares/${SAMBA_SHARE_NAME}/Java/* | head -1)" /data/shares/${SAMBA_SHARE_NAME}/Java/jre
-  echo "Extracted 'Java' folder"
+  echo "Extracted 'Java' to '/data/shares/${SAMBA_SHARE_NAME}/Java/jre' folder"
 fi
 
 chown -R ${USER_NAME}:${GROUP_NAME} /data/shares/${SAMBA_SHARE_NAME}/Java
@@ -107,7 +107,7 @@ if [ ! -d /data/shares/${SAMBA_SHARE_NAME}/Java64 ] ; then
   mkdir -p /data/shares/${SAMBA_SHARE_NAME}/Java64
   unzip -q -d /data/shares/${SAMBA_SHARE_NAME}/Java64/ "$(ls -A1 /data/downloads/jre64/*.zip | head -1)"
   mv "$(ls -A1d /data/shares/${SAMBA_SHARE_NAME}/Java64/* | head -1)" /data/shares/${SAMBA_SHARE_NAME}/Java64/jre
-  echo "Extracted 'Java64' folder"
+  echo "Extracted 'Java64' to '/data/shares/${SAMBA_SHARE_NAME}/Java64/jre' folder"
 fi
 
 chown -R ${USER_NAME}:${GROUP_NAME} /data/shares/${SAMBA_SHARE_NAME}/Java64
@@ -115,7 +115,7 @@ chmod -R 550                        /data/shares/${SAMBA_SHARE_NAME}/Java64
 
 if [ ! -d /data/shares/${SAMBA_SHARE_NAME}/Reports ] ; then
   mkdir -p /data/shares/${SAMBA_SHARE_NAME}/Reports
-  echo "Created 'Reports' folder"
+  echo "Created '/data/shares/${SAMBA_SHARE_NAME}/Reports' folder"
 fi
 
 chown ${USER_NAME}:${GROUP_NAME} /data/shares/${SAMBA_SHARE_NAME}/Reports
@@ -154,6 +154,6 @@ echo "Created '/etc/samba/smb.conf' file"
 # directory for samba log files
 mkdir -p /usr/local/samba/var/
 
-echo "Everything is ready, proceed with 'exec'uting the following command: [$@]"
+echo "Everything is ready, will proceed with 'exec'uting the following command: [$@]"
 
 exec "$@"
