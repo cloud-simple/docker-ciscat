@@ -90,6 +90,9 @@ DEFAULT_SENDER_EMAIL_ADDRESS=noreply@smtp.example.org
   * `SMTP_USER` - SMTP USER parameter of CCPD App
   * `SMTP_PASS` - SMTP PASS parameter of CCPD App
   * `DEFAULT_SENDER_EMAIL_ADDRESS` - default address for '**forgot password**' email messages
+* Create the directory `certs` (within `ccpd` directory) and place the following files within it to be able to use TLS
+  * `ccpd/certs/chain.pem` - the server's certificate, if it is signed by a CA, this certificate file should be a bundle: a concatenation of the server's certificate followed by the CA's
+  * `ccpd/certs/key.pem` - the server's private key file which matches the certificate file
 * Create the directory `/srv/docker/ccpd/downloads` with the following directory structure within it and add there corresponding content
   * `./dashboard/` place here the distribution `zip` file with CCPD App, like: `./dashboard/CIS-CAT-Pro-Dashboard-v2.3.2-unix.zip`
 * The following is an exemplary content of possible directory structure - more details on how the container processes the directory structure are available in the section '**Deployment details - ccpd**' below

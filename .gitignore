@@ -1,2 +1,4 @@
+ccpd/certs
+ccpd/backups
 .env
 .tmp

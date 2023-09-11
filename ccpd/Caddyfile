@@ -1,0 +1,5 @@
+:443 {
+	redir / /CCPD/
+	tls /etc/caddy_certs/chain.pem /etc/caddy_certs/key.pem
+	reverse_proxy ccpd:8080
+}

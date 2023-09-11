@@ -1,6 +1,19 @@
 version: '3.5'
 
 services:
+  caddy:
+    container_name: caddy
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./certs:/etc/caddy_certs
+    networks:
+      - cis-ccpd
+      - cis-fe
+
   my4ccpd:
     container_name: my4ccpd
     image: mysql:5.7
@@ -22,8 +35,6 @@ services:
     container_name: ccpd
     build: ./
     restart: always
-    ports:
-      - 80:8080
     environment:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
@@ -53,3 +64,9 @@ networks:
       config:
         - subnet: 192.168.170.0/24
           gateway: 192.168.170.1
+  cis-fe:
+    name: cis-fe
+    ipam:
+      config:
+        - subnet: 192.168.171.0/24
+          gateway: 192.168.171.1
