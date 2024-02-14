@@ -116,7 +116,7 @@ $ tree /srv/docker/ccpd/downloads
 ### `smb`
 
 * The container runs `samba (smbd)` service which serves Assessor App content in '**Centralized Workflow**' mode
-* According to `docker-compose.yaml` file the container is starting with the host path `/srv/docker/smb` mounted as the container volume with path `/data`
+* According to `docker-compose.yaml` file the container is started with the host path `/srv/docker/smb` mounted as the container volume with path `/data`
 * To serve Assessor App the container ENTRYPOINT script (`entrypoint.sh`) creates (and fills with approprate content) the directory structure for SMB foder used as Assessor App Shared Folder (available within container file system at `/data/shares/${SAMBA_SHARE_NAME}` path) and make all necessary changes for `smbd` configuration
 * All the required content of Assessor App Shared Folder direcory structure (below the `/data/shares/${SAMBA_SHARE_NAME}` directory) is based on the structure and content of '**downloads**' directory (available within container file system at `/data/downloads` path, and provided via the mentioned above container volume) and formed in the following way
   * If a component of Assessor App Shared Folder direcory structure exists (available via the mentioned above container volume on `/data/shares/${SAMBA_SHARE_NAME}` path) the component content is not recreated and is left as is
